@@ -1,0 +1,20 @@
+[
+     {
+          "title": "wwwww",
+          "description": "wwwww",
+          "price": 555,
+          "thumbnail": "wwwww",
+          "code": 444,
+          "stock": 5,
+          "id": 1
+     },
+     {
+          "title": "xxxx",
+          "description": "xxxx",
+          "price": 333,
+          "thumbnail": "xxxx",
+          "code": 555,
+          "stock": 5,
+          "id": 2
+     }
+]
