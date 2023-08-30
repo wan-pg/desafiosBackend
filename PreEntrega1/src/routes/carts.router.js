@@ -85,34 +85,34 @@ router.get('/:cid',(req,res)=>{
  router.post('/:cid/product/:pid',(req,res)=>{
 
     let carts = getCarts();
-    let products = getProducts();
-
+    
+    
     let { cid, pid } = req.params;
     cid = parseInt(cid);
     pid = parseInt(pid);
 
-    //obtener producto por id
+    // verificar si el id de producto existe
 
-    let productoBuscado = products.find(producto =>producto.id === pid)
-    if(productoBuscado != undefined){
-        res.status(200).json({productoBuscado})
-    }else{
-        res.status(400).json({status:'error', mensaje: `El id ${pid} no existe`})
+    //Buscar Carrito
+
+    let cartEncontrado = carts.find(cart => cart.id === cid)
+    if(!cartEncontrado){
+         return res.status(400).json({error: `el carro con id ${cid} no existe`})
     }
 
-    //obtener carrito por id
-    let resultado = carts.filter(carrito=>carrito.id===cid)
-    if (resultado.length>0){
-        const productosCarrito = resultado[0].products
-        res.status(200).json({status:'ok', data:productosCarrito})
-        console.log(resultado)
-        }else{
-            res.status(400).json({status:'error', mensaje: `El id ${cid} no existe`})
-        }
+    // verificar si el producto existe en cart
 
-    //Agregar producto
+    let productoEncontrado = cartEncontrado.products.find(item => item.id === pid)
 
-    carts.products.push(productoBuscado.id)
+    if(!productoEncontrado){
+        cartEncontrado.products.push({id: pid, quantity: 1})
+        saveCarts(carts)
+        return res.status(200).json({mensaje: 'Producto agregado'})
+   }else{
+    productoEncontrado.quantity ++
+    saveCarts(carts)
+    return res.status(200).json({mensaje:'se incrmentó cantidad'})
+   }
  })
 
 //Exportar router
