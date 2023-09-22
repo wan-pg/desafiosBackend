@@ -1,6 +1,7 @@
 const socket = io()
 
 socket.on('productos',(productos)=>{
+    
     let ul ='';
     productos.forEach(producto => {
         
