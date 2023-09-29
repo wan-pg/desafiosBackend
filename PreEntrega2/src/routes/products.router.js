@@ -13,29 +13,41 @@ router.get('/',async(req,res)=>{
 
     let limite = req.query.limite
 
-    let productos= await productosModelo.paginate({},{limit:limite, lean:true, page:pagina})
-    console.log(productos)
+    let totalProductos = await productosModelo.countDocuments(); //contar productos en la base de datos para establecer límite dinámico
+    if(!limite) limite = totalProductos
+   
+    let categoria = req.query.categoria 
+    let filtro = {'category': `${categoria}`}  // filtro categoría
+    if(!categoria) filtro = ''
+    
+    console.log('categoria',categoria)
 
-    //paginación
+    
+        let productos = await productosModelo.paginate(filtro, { limit: limite, lean: true, page: pagina, sort:{price:1} });
+        
+        console.log(productos);
+        
+        
+//paginación
 
   let{
-  totalPages,
-  hasPrevPage,
-  hasNextPage,
-  prevPage,
-  nextPage
-} = productos
-
-    res.setHeader('Content-Type', 'text/html');
-    res.status(200).render('products',{productos: productos.docs,
-        totalPages,
-        hasPrevPage,
-        hasNextPage,
-        prevPage,
-        nextPage
-    }
-        
-    )
+    totalPages,
+    hasPrevPage,
+    hasNextPage,
+    prevPage,
+    nextPage
+  } = productos
+  
+      res.setHeader('Content-Type', 'text/html');
+      res.status(200).render('products',{productos: productos.docs,
+          totalPages,
+          hasPrevPage,
+          hasNextPage,
+          prevPage,
+          nextPage
+      }
+          
+      )   
 })
 
 //Crear producto nuevo
