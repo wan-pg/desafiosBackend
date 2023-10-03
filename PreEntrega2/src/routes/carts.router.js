@@ -139,3 +139,32 @@ if (!cart) {
       );
     res.status(200).json({resultado})
 })
+
+
+//Modificar cantidad de un producto específico
+
+router.put('/:cid/product/:pid', async (req,res)=>{
+    let {cid, pid} = req.params
+    let {cantidad} = req.body
+
+    //verificar cid válido
+    if(!mongoose.Types.ObjectId.isValid(cid)) return res.status(400).json({error:'id invalido'})
+
+    //verificar pid válido
+    if(!mongoose.Types.ObjectId.isValid(pid)) return res.status(400).json({error:'id invalido'})   
+
+//traer el carrito
+const cart = await cartsModelo.findById(cid);
+if (!cart) {
+    return res.status(404).json({ error: `El carrito con id ${cid} no existe` });}
+//buscar producto en el carrito
+    let productoBuscado = cart.products.findIndex(product => product.producto.toString() === pid);
+    if(productoBuscado === -1) return res.status(404).json({ error: `El producto con id ${pid} no existe` })
+
+
+    let resultado=await  cartsModelo.updateOne(
+        { _id: cid,'products.producto':pid },
+        { $set: { 'products.$.quantity':cantidad } }
+      );
+    res.status(200).json({resultado})
+})
