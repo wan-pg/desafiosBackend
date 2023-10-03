@@ -34,9 +34,10 @@ router.get('/:cid',async(req,res)=>{
     
     let cartBuscado=await cartsModelo.findById(cid).lean()
                             .populate('products.producto')
-                            console.log(cartBuscado)
+                            console.log(JSON.stringify(cartBuscado,null,5))
+    
     if(!cartBuscado) return res.status(400).json({error:`cart con _id ${cid} no existe`})
-
+    
     res.status(200).render('cartId',
     {cartBuscado}
     )
@@ -168,3 +169,26 @@ if (!cart) {
       );
     res.status(200).json({resultado})
 })
+
+//Modificar todos los productos
+
+router.put('/:cid', async (req,res)=>{
+    let {cid} = req.params
+    let {productos} = req.body
+
+    //verificar cid válido
+    if(!mongoose.Types.ObjectId.isValid(cid)) return res.status(400).json({error:'id invalido'})
+
+//traer el carrito
+const cart = await cartsModelo.findById(cid);
+if (!cart) {return res.status(404).json({ error: `El carrito con id ${cid} no existe` });}
+
+
+    let resultado=await  cartsModelo.updateOne(
+        { _id: cid},
+        { $set: {'products.$[]':productos} }
+      );
+    res.status(200).json({resultado})
+})
+
+
