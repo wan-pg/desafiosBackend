@@ -32,12 +32,14 @@ router.get('/:cid',async(req,res)=>{
     //verificar id válido
     if(!mongoose.Types.ObjectId.isValid(cid)) return res.status(400).json({error:'id invalido'})
     
-    let cartBuscado=await cartsModelo.findById(cid)
+    let cartBuscado=await cartsModelo.findById(cid).lean()
+                            .populate('products.producto')
+                            console.log(cartBuscado)
     if(!cartBuscado) return res.status(400).json({error:`cart con _id ${cid} no existe`})
 
-    res.status(200).json({
-        cartBuscado
-    })
+    res.status(200).render('cartId',
+    {cartBuscado}
+    )
 })
 
 //Agregar producto al carro
@@ -62,7 +64,7 @@ router.post('/:cid/product/:pid', async (req,res)=>{
 
     // Verificar si el producto ya está en el carrito
     const existingProduct = cartEncontrado.products.findIndex(product => product.producto.toString() === pid);
-    console.log(existingProduct)
+    
     if (existingProduct !== -1) {
         // Si el producto ya está en el carrito, incrementar la cantidad en 1
         let cartActulizado = await cartsModelo.updateOne(

@@ -1,0 +1,21 @@
+<h1>Carrito</h1>
+<hr>
+<br>
+<h3>Productos</h3>
+
+<a href="/api/products?pagina=1&limite={{limit}}">Volver</a>
+ 
+{{#each cartBuscado.products}}
+ <ul>
+    <li>
+        Producto: {{this.producto.title}} <br>
+        Categoría: {{this.producto.category}} <br>
+        Precio: {{this.producto.price}} <br>
+        Cantidad:{{this.quantity}}
+    </li>
+ </ul>
+{{/each}}
+
+
+  
+

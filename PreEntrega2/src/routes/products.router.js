@@ -1,12 +1,20 @@
 import { Router } from "express";
 import mongoose from "mongoose";
 import { productosModelo } from "../DAO/models/productos.modelo.js";
+import { cartsModelo } from "../DAO/models/carts.modelo.js";
 
 export const router = Router()
 
 
 //Mostrar Productos
-router.get('/',async(req,res)=>{  
+router.get('/',async(req,res)=>{ 
+//obtener cid para vincularlo al enlace
+    //obetner el cart - para porder obtener el cid y poder  hacer un link 
+    // al la vista de carrito
+    let cart = await cartsModelo.findOne().lean()
+    let cid = cart._id
+
+    
     
     let pagina = req.query.pagina
     if(!pagina) pagina = 1
@@ -21,7 +29,7 @@ router.get('/',async(req,res)=>{
     if(!categoria) filtro = ''
     
     let productos = await productosModelo.paginate(filtro, { limit: limite, lean: true, page: pagina, sort:{price:1} });
-    console.log(productos)
+    //console.log(productos)
                 
 //paginación
 
@@ -31,7 +39,7 @@ router.get('/',async(req,res)=>{
     hasNextPage,
     prevPage,
     limit,
-    nextPage
+    nextPage    
   } = productos
   
       res.setHeader('Content-Type', 'text/html');
@@ -41,7 +49,8 @@ router.get('/',async(req,res)=>{
           hasNextPage,
           prevPage,
           limit,
-          nextPage
+          nextPage,
+          cid:cid
       }
           
       )   

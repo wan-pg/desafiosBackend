@@ -1,6 +1,9 @@
 <h1>Productos</h1>
 <hr>
 <br>
+{{!-- Vista de carrito --}}
+<a href="/api/carts/{{cid}} ">Ir al cart</a>
+
 
 <ul>
     {{#each productos}}
@@ -8,11 +11,13 @@
             Producto: {{this.title}} <br>
             Precio: {{this.price}} <br>
             Categoría: {{this.category}} <br>
-            Stock: {{this.stock}} <br>
-            <a href='/api/products/detalle/{{this._id}}'><button>Detalles</button></a>
-            <button action = '/:cid/product/:pid' method ='post' >Agregar al carrito</button>
+            Stock: {{this.stock}} <br>  
 
         </li>
+        <a href='/api/products/detalle/{{this._id}}'><button>Detalles</button></a>
+            <form action='/api/carts/{{../cid}}/product/{{this._id}}' method ='post'>
+                <button id="addCart" type = "submit" >Agregar al carrito</button>
+            </form>  
     {{/each}}
 </ul>
 
@@ -33,3 +38,5 @@
 {{/if}}
 
 <a href="/api/products?pagina={{totalPages}}&limite={{limit}}">Ult.Pág</a>
+
+<script src="../public/assets/js/main.js"></script>

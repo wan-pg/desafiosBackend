@@ -21,6 +21,15 @@ app.use(express.urlencoded({extended:true}));
 
 app.use(express.static(path.join(__dirname,'./public')));
 
+app.get('/',(req,res)=>{
+    
+    res.setHeader('Content-Type','text/html');
+    res.status(200).render(
+        'home'
+    );
+});
+
+
 app.use('/api/products',productsRouter);
 app.use('/api/carts',cartsRouter);
 
