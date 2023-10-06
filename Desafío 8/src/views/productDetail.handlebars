@@ -1,0 +1,24 @@
+<h1>Detalle Producto</h1>
+<hr>
+<a href="/api/products?pagina=1&limite={{limit}}">Volver</a>
+<br>
+<div>
+    <ul>
+        <li>
+            {{producto.title}}             
+        </li>
+        <li>
+            {{producto.description}}
+        </li>
+        <li>
+            {{producto.price}}
+        </li>
+        <li>
+            {{producto.category}}
+        </li>
+        <li>
+            {{producto.stock}}
+        </li>
+    </ul>
+    <img src="{{producto.thumbnail}}" alt="">
+</div>
