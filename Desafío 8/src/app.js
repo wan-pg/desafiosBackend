@@ -3,8 +3,13 @@ import path from 'path';
 import express from 'express';
 import {engine} from 'express-handlebars';
 import mongoose from 'mongoose';
+import session from 'express-session'
+import ConnectMongo from 'connect-mongo'
+
 import { router as productsRouter } from './routes/products.router.js';
 import { router as cartsRouter } from './routes/carts.router.js';
+import { router as vistasRouter } from './routes/vistas.router.js';
+import { router as sessionsRouter } from './routes/sessions.router.js';
 
 
 const PORT=3000;
@@ -21,15 +26,17 @@ app.use(express.urlencoded({extended:true}));
 
 app.use(express.static(path.join(__dirname,'./public')));
 
-app.get('/',(req,res)=>{
-    
-    res.setHeader('Content-Type','text/html');
-    res.status(200).render(
-        'home'
-    );
-});
+app.use(session({
+    secret:'claveSecreta',
+    resave:true, saveUninitialized:true,
+    store: ConnectMongo.create({
+        mongoUrl:'mongodb+srv://wanpg:Wanpg831206@cluster0.99iqfix.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp&dbName=ecommerce',
+        ttl: 3600
+    })
+}))
 
-
+app.use('/', vistasRouter)
+app.use('/api/sessions', sessionsRouter)
 app.use('/api/products',productsRouter);
 app.use('/api/carts',cartsRouter);
 

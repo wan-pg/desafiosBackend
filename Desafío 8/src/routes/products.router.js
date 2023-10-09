@@ -29,7 +29,7 @@ router.get('/',async(req,res)=>{
     if(!categoria) filtro = ''
     
     let productos = await productosModelo.paginate(filtro, { limit: limite, lean: true, page: pagina, sort:{price:1} });
-    //console.log(productos)
+   
                 
 //paginación
 
@@ -88,7 +88,7 @@ router.put('/:id',async(req, res)=>{
 
 
     let existe=await productosModelo.findById(id)
-    console.log(existe)
+    
 
     if(!existe) return res.status(404).json({error:`producto con id ${id} inexistente`})
 
@@ -120,7 +120,7 @@ router.get('/detalle/:id',async(req, res)=>{
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({error:'id invalido'}) // verificar si es un id válido
 
     let producto =await productosModelo.findById(id).lean()
-    console.log(producto)
+    
 
     if(!producto) return res.status(404).json({error:`producto con id ${id} inexistente`})  
     res.status(200).render('productDetail',{producto})
