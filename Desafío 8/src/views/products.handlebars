@@ -1,6 +1,8 @@
 <h1>Productos</h1>
 <hr>
 <br>
+<h2>Bienvenido {{nombre}}</h2>
+<br>
 {{!-- Vista de carrito --}}
 <a href="/api/carts/{{cid}} ">Ir al cart</a>
 <form action="/api/sessions/logout">
@@ -18,9 +20,16 @@
 
         </li>
         <a href='/api/products/detalle/{{this._id}}'><button>Detalles</button></a>
+            {{#if ../addCartBtn}}
             <form action='/api/carts/{{../cid}}/product/{{this._id}}' method ='post'>
                 <button id="addCart" type = "submit" >Agregar al carrito</button>
-            </form>  
+            </form> 
+            {{else}}
+            <form action='/api/carts/{{../cid}}/product/{{this._id}}' method ='post'>
+                <button id="addCart" type = "submit" disabled="disabled" >Agregar al carrito</button>
+            </form> 
+            {{/if}}
+
     {{/each}}
 </ul>
 

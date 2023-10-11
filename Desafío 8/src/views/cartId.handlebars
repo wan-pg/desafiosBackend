@@ -3,7 +3,11 @@
 <br>
 <h3>Productos</h3>
 
-<a href="/api/products?pagina=1&limite={{limit}}">Volver</a>
+<a href="/api/products?pagina=1&limite={{limit}}">Volver</a> <br>
+
+<form action="/api/sessions/logout">
+    <button  class="btn btn-primary m-3 w-30" >Logout</button>
+</form>
 
  
 {{#each cartBuscado.products}}

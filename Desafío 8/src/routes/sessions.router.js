@@ -8,7 +8,8 @@ export const router=Router()
 
 router.post('/registro',async(req,res)=>{
 
-    let {nombre, email, password}=req.body
+ let {nombre, email, password}=req.body
+
 
     if(!nombre || !email || !password){
         return res.status(400).send('faltan datos')
@@ -26,6 +27,7 @@ router.post('/registro',async(req,res)=>{
     })
 
     res.redirect(`/?usuarioCreado=${email}`)
+    
 })
 
 // Logearse en el sitio
@@ -34,6 +36,7 @@ router.post('/login',async(req,res)=>{
     console.log("hola")
 
     let {email, password}=req.body
+    console.log(email)
 
     if(!email || !password) {
         return res.send('faltan datos')
@@ -50,7 +53,7 @@ router.post('/login',async(req,res)=>{
         nombre: usuario.nombre,
         email: usuario.email
     }
-
+    
     res.redirect('/api/products')
 
     

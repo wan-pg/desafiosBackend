@@ -2,6 +2,7 @@ import { Router } from "express";
 import mongoose from "mongoose";
 import { productosModelo } from "../DAO/models/productos.modelo.js";
 import { cartsModelo } from "../DAO/models/carts.modelo.js";
+import { usuariosModelo } from "../DAO/models/usuarios.modelo.js";
 
 export const router = Router()
 
@@ -12,9 +13,20 @@ router.get('/',async(req,res)=>{
     //obetner el cart - para porder obtener el cid y poder  hacer un link 
     // al la vista de carrito
     let cart = await cartsModelo.findOne().lean()
-    let cid = cart._id
-
+    let cid = cart._id   
     
+       
+    let nombre = req.session.usuario.nombre
+    let email = req.session.usuario.email
+    
+    
+
+    let addCartBtn =false
+
+    if(email === 'adminCoder@coder.com'){
+        addCartBtn = true
+    } 
+    console.log(addCartBtn)
     
     let pagina = req.query.pagina
     if(!pagina) pagina = 1
@@ -50,7 +62,10 @@ router.get('/',async(req,res)=>{
           prevPage,
           limit,
           nextPage,
-          cid:cid
+          cid:cid,
+          nombre,
+          addCartBtn
+                   
       }
           
       )   
