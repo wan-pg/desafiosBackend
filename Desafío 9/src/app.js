@@ -5,6 +5,8 @@ import {engine} from 'express-handlebars';
 import mongoose from 'mongoose';
 import session from 'express-session'
 import ConnectMongo from 'connect-mongo'
+import { inicializaPassport } from './config/passport.local.js';
+import passport from 'passport';
 
 import { router as productsRouter } from './routes/products.router.js';
 import { router as cartsRouter } from './routes/carts.router.js';
@@ -34,6 +36,12 @@ app.use(session({
         ttl: 3600
     })
 }))
+
+//midleware passport
+inicializaPassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 app.use('/', vistasRouter)
 app.use('/api/sessions', sessionsRouter)

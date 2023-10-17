@@ -16,8 +16,8 @@ router.get('/',async(req,res)=>{
     let cid = cart._id   
     
        
-    let nombre = req.session.usuario.nombre
-    let email = req.session.usuario.email
+    let nombre = req.user.nombre
+    let email = req.user.email
     
     
 
