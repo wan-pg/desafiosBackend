@@ -1,0 +1,57 @@
+<h1>Productos</h1>
+<hr>
+<br>
+<h2>Bienvenido {{nombre}}</h2>
+<br>
+{{!-- Vista de carrito --}}
+<a href="/api/carts/{{cid}} ">Ir al cart</a>
+<form action="/api/sessions/logout">
+    <button  class="btn btn-primary m-3 w-30" >Logout</button>
+</form>
+
+
+<ul>
+    {{#each productos}}
+        <li>
+            Producto: {{this.title}} <br>
+            Precio: {{this.price}} <br>
+            Categoría: {{this.category}} <br>
+            Stock: {{this.stock}} <br>  
+
+        </li>
+        <a href='/api/products/detalle/{{this._id}}'><button>Detalles</button></a>
+        <form action='/api/carts/{{../cid}}/product/{{this._id}}' method ='post'>
+                <button id="addCart" type = "submit" >Agregar al carrito</button>
+            </form> 
+           {{!--  {{#if ../addCartBtn}}
+            <form action='/api/carts/{{../cid}}/product/{{this._id}}' method ='post'>
+                <button id="addCart" type = "submit" >Agregar al carrito</button>
+            </form> 
+            {{else}}
+            <form action='/api/carts/{{../cid}}/product/{{this._id}}' method ='post'>
+                <button id="addCart" type = "submit" disabled="disabled" >Agregar al carrito</button>
+            </form> 
+            {{/if}} --}}
+
+    {{/each}}
+</ul>
+
+<br>
+
+<a href="/api/products?pagina=1&limite={{limit}}">Pág.1</a>
+
+{{#if hasPrevPage}}
+    <a href="/api/products?pagina={{prevPage}}&limite={{limit}}">Prev.Pág.</a>
+{{else}}
+    <span>Prev.Pág.</span>
+{{/if}}
+
+{{#if hasNextPage}}
+    <a href="/api/products?pagina={{nextPage}}&limite={{limit}}">Next.Pág.</a>
+{{else}}
+    <span>Next.Pág.</span>
+{{/if}}
+
+<a href="/api/products?pagina={{totalPages}}&limite={{limit}}">Ult.Pág</a>
+
+<script src="../public/assets/js/main.js"></script>
